@@ -38,3 +38,68 @@ def velocity_profile(y_over_h, Gamma, ns, np_, delta_over_h):
     result[mask_s] = numer_s/denom
 
     return result
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+# Panel (a): vary Gamma (ns = 0.7, np = 1.3, delta/h = 0.5)
+ax = axes[0, 0]
+dh_a = 0.5
+y_arr_a = np.linspace(-dh_a, 1.0, 500)
+for Gamma, c in zip([0.1, 1.0, 10.0], ['blue', 'black', 'red']):
+    u_prof = velocity_profile(y_arr_a, Gamma, 0.7, 1.3, dh_a)
+    ax.plot(u_prof, y_arr_a, color=c, label=f'$\\Gamma$ = {Gamma}')
+
+ax.set_xlabel('$u/\\langle\\bar{u_p}\\rangle$')
+ax.set_ylabel('$y/h$')
+ax.set_title('$n_s = 0.7, n_p = 1.3, \\delta/h = 0.5$')
+ax.legend(loc='lower right')
+ax.grid(True, which='both', alpha=0.4)
+ax.axhline(0, color='gray', linestyle=':')
+
+# Panel (b): vary ns (Gamma = 1, np = 1, delta/h = 0.5)
+ax = axes[0, 1]
+dh_b = 0.5
+y_arr_b = np.linspace(-dh_b, 1.0, 500)
+for ns, c in zip([0.25, 0.5, 1.0, 1.5, 1.75], ['blue', 'green', 'black', 'red', 'magenta']):
+    u_prof = velocity_profile(y_arr_b, 1.0, ns, 1.0, dh_b)
+    ax.plot(u_prof, y_arr_b, color=c, label=f'$n_s$ = {ns}')
+
+ax.set_xlabel('$u/\\langle\\bar{u_p}\\rangle$')
+ax.set_ylabel('$y/h$')
+ax.set_title('$\\Gamma = 1, n_p = 1, \\delta/h = 0.5$')
+ax.legend(loc='lower right')
+ax.grid(True, which='both', alpha=0.4)
+ax.axhline(0, color='gray', linestyle=':')
+
+# Panel (c): vary np (Gamma = 1, ns = 1, delta/h = 0.5)
+ax = axes[1, 0]
+dh_c = 0.5
+y_arr_c = np.linspace(-dh_c, 1.0, 500)
+for np_, c in zip([0.25, 0.5, 1.0, 1.5, 1.75], ['blue', 'green', 'black', 'red', 'magenta']):
+    u_prof = velocity_profile(y_arr_c, 1.0, 1.0, np_, dh_c)
+    ax.plot(u_prof, y_arr_c, color=c, label=f'$n_p$ = {np_}')
+
+ax.set_xlabel('$u/\\langle\\bar{u_p}\\rangle$')
+ax.set_ylabel('$y/h$')
+ax.set_title('$\\Gamma = 1, n_s = 1, \\delta/h = 0.5$')
+ax.legend(loc='lower right')
+ax.grid(True, which='both', alpha=0.4)
+ax.axhline(0, color='gray', linestyle=':')
+
+# Panel (d): vary delta/h (Gamma = 1, ns = 1, np = 1)
+ax = axes[1, 1]
+for dh, c in zip([0, 0.1, 0.25, 0.5, 1.0], ['blue', 'green', 'black', 'red', 'magenta']):
+    y_arr_d = np.linspace(-dh, 1.0, 500)
+    u_prof = velocity_profile(y_arr_d, 1.0, 1.0, 1.0, dh)
+    ax.plot(u_prof, y_arr_d, color=c, label=f'$\\delta/h$ = {dh}')
+
+ax.set_xlabel('$u/\\langle\\bar{u_p}\\rangle$')
+ax.set_ylabel('$y/h$')
+ax.set_title('$\\Gamma = 1, n_s = 1, n_p = 1$')
+ax.legend(loc='lower right')
+ax.grid(True, which='both', alpha=0.4)
+ax.axhline(0, color='gray', linestyle=':')
+
+plt.tight_layout()
+plt.savefig('figure3_velocity_profiles.png', dpi=150, bbox_inches='tight')
+plt.show()
